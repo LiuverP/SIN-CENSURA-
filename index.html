@@ -96,6 +96,35 @@ body {
   color:#bbbbbb;
   line-height:1.2;
 }
+
+/* 🔘 Estilos del anuncio circular */
+#adCircle {
+  position:absolute;
+  top:70px; /* más arriba para no tocar nombre */
+  right:30px; /* separado hacia el lado oscuro */
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid #00c3ff;
+  display:none;
+  box-shadow:0 0 10px rgba(0,195,255,0.6);
+  animation:float 2s ease-in-out infinite;
+  cursor:pointer;
+  transition:opacity 0.5s ease;
+  opacity:0;
+}
+#adCircle img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ✨ Movimiento de subir y bajar */
+@keyframes float {
+  0%, 100% { transform:translateY(0); }
+  50% { transform:translateY(-8px); }
+}
 </style>
 </head>
 <body oncontextmenu="return false">
@@ -106,7 +135,12 @@ body {
       <path d="M18.36 6.64a1 1 0 0 0-1.41 0L12 11.59 7.05 6.64a1 1 0 1 0-1.41 1.41L10.59 13l-4.95 4.95a1 1 0 1 0 1.41 1.41L12 14.41l4.95 4.95a1 1 0 0 0 1.41-1.41L13.41 13l4.95-4.95a1 1 0 0 0 0-1.41z"/>
     </svg>
   </div>
-  
+
+  <!-- 🔘 Anuncio circular con enlace -->
+  <div id="adCircle" onclick="window.open('https://giggleinsinuate.com/k6dgrqyc5g?key=a8ff3a3445842a223c56722310a7ef82','_blank')">
+    <img src="https://files.fm/thumb_show.php?i=gnvgbfce6f" alt="Anuncio">
+  </div>
+
   <img src="https://iili.io/KGIx3pS.jpg" alt="Perfil Canal">
   
   <div class="channel-name">
@@ -116,7 +150,7 @@ body {
       <path d="M9.5 12.5l2 2 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
-  
+
   <div class="channel-sub">Grupo privado</div>
 
   <button id="shareBtn">Compartir en Telegram 0/5</button>
@@ -129,6 +163,19 @@ const requiredShares = 5;
 const shareBtn = document.getElementById("shareBtn");
 const messageDiv = document.getElementById("message");
 const closeBtn = document.getElementById("closeBtn");
+const adCircle = document.getElementById("adCircle");
+
+// Mostrar anuncio rápido y ocultarlo luego de 8 segundos
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    adCircle.style.display = "block";
+    adCircle.style.opacity = 1;
+    setTimeout(() => {
+      adCircle.style.opacity = 0;
+      setTimeout(() => { adCircle.style.display = "none"; }, 500);
+    }, 8000);
+  }, 500); // aparece más rápido
+});
 
 shareBtn.addEventListener("click", () => {
   if (shares < requiredShares) {
@@ -138,13 +185,12 @@ shareBtn.addEventListener("click", () => {
   }
 
   if (shares >= requiredShares) {
-    // Reemplazamos el botón por un enlace que apunta a tu canal
     const link = document.createElement("a");
     link.href = "https://t.me/+GRSnABs7jmk4ZGYx";
     link.target = "_blank";
     link.id = "shareBtn";
     link.textContent = "Solicitar unirme al grupo";
-    link.style.cssText = shareBtn.style.cssText; // Mantiene estilos
+    link.style.cssText = shareBtn.style.cssText;
     shareBtn.replaceWith(link);
     messageDiv.textContent = "Este grupo acepta nuevos miembros solo después de ser aprobados por un administrador.";
   }
@@ -154,6 +200,5 @@ closeBtn.onclick = () => {
   document.getElementById("simulator").style.display = "none";
 };
 </script>
-
 </body>
 </html>
